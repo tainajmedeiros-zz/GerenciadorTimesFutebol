@@ -10,18 +10,18 @@ import java.util.List;
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
-    private List<Jogador> jogadores = new ArrayList<>();
+    public List<Jogador> jogadores = new ArrayList<>();
     public List<Time> times = new ArrayList<>();
 
     @Override
     public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal, String corUniformeSecundario) {
-        verificarExistenciaId(id);
+        verificarExistenciaIdTime(id);
         times.add(new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario));
     }
 
     @Override
     public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario)  {
-        verificarExistenciaId(id);
+        verificarExistenciaIdJogador(id);
         verificarExistenciaTime(idTime);
         jogadores.add(new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario));
     }
@@ -91,10 +91,10 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
                 break;
             }
         }
-         if(!existeTime) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
+         if(existeTime) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
     }
 
-    public void verificarExistenciaId(Long idTime) {
+    public void verificarExistenciaIdTime(Long idTime) {
         boolean existeId = false;
 
         for (Time t : times) {
@@ -103,6 +103,6 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
                 break;
             }
         }
-        if(!existeId) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
+        if(existeId) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
     }
 }

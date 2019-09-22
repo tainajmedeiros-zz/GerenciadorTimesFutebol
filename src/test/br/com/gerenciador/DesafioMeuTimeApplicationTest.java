@@ -6,6 +6,7 @@ import br.com.gerenciador.exceptions.TimeNaoEncontradoException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.Assert.*;
@@ -22,7 +23,8 @@ public class DesafioMeuTimeApplicationTest {
     @Test
     public void incluirTimeComSucesso(){
         desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
-        assertEquals(1, desafio.times.size());
+        desafio.incluirTime(2L,"flamengo", LocalDate.of(1988,06,18),"vermelho", "preto");
+        assertEquals(2, desafio.times.size());
     }
 
     @Test(expected = IdentificadorUtilizadoException.class)
@@ -31,4 +33,16 @@ public class DesafioMeuTimeApplicationTest {
         desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
     }
 
+    @Test
+    public void incluirJogadorComSucesso(){
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(2L,1L,"Hand",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        assertEquals(2,desafio.jogadores.size());
+    }
+
+    @Test(expected = IdentificadorUtilizadoException.class)
+    public void incluirJogadorComMesmoId(){
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(1L,1L,"Hand",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+    }
 }
