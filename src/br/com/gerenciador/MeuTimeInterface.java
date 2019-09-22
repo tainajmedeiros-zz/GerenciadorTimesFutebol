@@ -22,7 +22,7 @@ public interface MeuTimeInterface {
 
     public Long buscarJogadorMaiorSalario(Long idTime);
 
-    public BigDecimal buscarSalarioDoJogaodor(Long idJogador);
+    public BigDecimal buscarSalarioDoJogador(Long idJogador);
 
     public List<Long> buscarJogadoresDoTime(Long idTime);
 
