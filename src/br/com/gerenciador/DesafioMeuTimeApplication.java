@@ -1,4 +1,5 @@
 package br.com.gerenciador;
+import br.com.gerenciador.exceptions.JogadorNaoEncontradoException;
 import br.com.gerenciador.models.Jogador;
 import br.com.gerenciador.models.Time;
 import br.com.gerenciador.exceptions.TimeNaoEncontradoException;
@@ -15,14 +16,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal, String corUniformeSecundario) {
-        verificarExistenciaIdTime(id);
+        if(verificarExistenciaTime(id)) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException() ;
         times.add(new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario));
     }
 
     @Override
     public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario)  {
-        verificarExistenciaIdJogador(id);
-        verificarExistenciaTime(idTime);
+        if(verificarExistenciaJogador(id)) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
+        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
         jogadores.add(new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario));
     }
 
@@ -82,7 +83,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
     }
 
 
-    public void verificarExistenciaTime(Long idTime) throws TimeNaoEncontradoException {
+    public boolean verificarExistenciaTime(Long idTime) throws TimeNaoEncontradoException {
         boolean existeTime = false;
 
         for (Time t : times) {
@@ -91,22 +92,10 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
                 break;
             }
         }
-         if(existeTime) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
+         return existeTime;
     }
 
-    public void verificarExistenciaIdTime(Long idTime) {
-        boolean existeId = false;
-
-        for (Time t : times) {
-            if (t.getId() == idTime) {
-                existeId = true;
-                break;
-            }
-        }
-        if(existeId) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
-    }
-
-    public void verificarExistenciaIdJogador(Long id) {
+    public boolean verificarExistenciaJogador(Long id) {
         boolean existeId = false;
 
         for (Jogador j : jogadores) {
@@ -115,7 +104,8 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
                 break;
             }
         }
-        if(existeId) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
+        return existeId;
+
     }
 
 
