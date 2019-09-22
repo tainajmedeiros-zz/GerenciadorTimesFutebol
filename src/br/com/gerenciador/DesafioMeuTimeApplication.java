@@ -205,6 +205,23 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
         return topJogadores;
     }
 
+    @Override
+    public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
+
+        String corTimeCasa = "";
+        String corTimeFora = "";
+
+        for(Time t: times){
+            if(t.getId() == timeDaCasa){
+                corTimeCasa = t.getCorUniformePrincipal();
+            }else if(t.getId() == timeDeFora && !t.getCorUniformePrincipal().equals(corTimeCasa)){
+                corTimeFora = t.getCorUniformePrincipal();
+            }else
+                corTimeFora = t.getCorUniformeSecundario();
+        }
+
+        return corTimeFora;    }
+
 
     public boolean verificarExistenciaTime(Long idTime) throws TimeNaoEncontradoException {
         boolean existeTime = false;
