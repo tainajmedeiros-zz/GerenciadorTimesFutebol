@@ -69,6 +69,13 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public String buscarNomeJogador(Long idJogador) {
+        if(!verificarExistenciaJogador(idJogador)) throw new br.com.gerenciador.exceptions.JogadorNaoEncontradoException();
+
+        for (Jogador j : jogadores) {
+            if (j.getId() == idJogador) {
+                return j.getNome();
+            }
+        }
         return null;
     }
 
