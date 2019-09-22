@@ -200,4 +200,17 @@ public class DesafioMeuTimeApplicationTest {
         desafio.buscarJogadorMaisVelho(9L);
     }
 
+    @Test
+    public void buscarTimesComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirTime(2L,"flamengo", LocalDate.of(1988,06,18),"vermelho", "preto");
+        desafio.incluirTime(4L,"botafogo", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirTime(3L,"fluminense", LocalDate.of(1988,06,18),"vermelho", "preto");
+        List<Long> lista = desafio.buscarTimes();
+        assertEquals(lista.get(0), Long.valueOf(1L));
+        assertEquals(lista.get(1), Long.valueOf(2L));
+        assertEquals(lista.get(2), Long.valueOf(3L));
+        assertEquals(lista.get(3), Long.valueOf(4L));
+    }
+
 }
