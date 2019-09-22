@@ -178,7 +178,15 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public List<Long> buscarTimes() {
-        return null;
+        List<Long> listaTimes = new ArrayList<>();
+
+        for (Time t : times) {
+            listaTimes.add(t.getId());
+        }
+
+        Collections.sort(listaTimes);
+
+        return listaTimes;
     }
 
     @Override
