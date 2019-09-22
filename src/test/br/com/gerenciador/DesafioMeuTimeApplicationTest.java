@@ -167,4 +167,37 @@ public class DesafioMeuTimeApplicationTest {
     public void buscarMelhorJogadorDoTimeQueNaoExisteTime(){
         desafio.buscarMelhorJogadorDoTime(7L);
     }
+
+    @Test
+    public void buscarJogadorMaisVelhoComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(2L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(3L,1L,"Hand",LocalDate.of(1999,04,18),9, BigDecimal.valueOf(30));
+        desafio.incluirJogador(1L,1L,"Stella",LocalDate.of(2001,06,18),9, BigDecimal.valueOf(30));
+        assertEquals(Long.valueOf(2L), desafio.buscarJogadorMaisVelho(1L));
+    }
+
+    @Test
+    public void buscarJogadorMaisVelhoComIdadeIgualMenorIdAddPorUltimo(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(2L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(3L,1L,"Hand",LocalDate.of(1999,04,18),9, BigDecimal.valueOf(30));
+        desafio.incluirJogador(1L,1L,"Stella",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        assertEquals(Long.valueOf(1L), desafio.buscarJogadorMaisVelho(1L));
+    }
+
+    @Test
+    public void buscarJogadorMaisVelhoComIdadeIgualMenorIdAddPrimeiro(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(3L,1L,"Hand",LocalDate.of(1999,04,18),9, BigDecimal.valueOf(30));
+        desafio.incluirJogador(2L,1L,"Stella",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        assertEquals(Long.valueOf(1L), desafio.buscarJogadorMaisVelho(1L));
+    }
+
+    @Test(expected = TimeNaoEncontradoException.class)
+    public void buscarJogadorMaisVelhoDeTimeQueNaoExiste(){
+        desafio.buscarJogadorMaisVelho(9L);
+    }
+
 }
