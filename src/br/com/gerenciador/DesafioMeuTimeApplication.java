@@ -220,7 +220,8 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
                 corTimeFora = t.getCorUniformeSecundario();
         }
 
-        return corTimeFora;    }
+        return corTimeFora;
+    }
 
 
     public boolean verificarExistenciaTime(Long idTime) throws TimeNaoEncontradoException {
