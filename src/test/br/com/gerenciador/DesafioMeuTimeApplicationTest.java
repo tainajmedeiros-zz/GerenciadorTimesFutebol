@@ -154,5 +154,17 @@ public class DesafioMeuTimeApplicationTest {
         desafio.buscarJogadoresDoTime(8L);
     }
 
+    @Test
+    public void buscarMelhorJogadorDoTime(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(2L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(3L,1L,"Hand",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        desafio.incluirJogador(1L,1L,"Stella",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        assertEquals(Long.valueOf(2L), desafio.buscarMelhorJogadorDoTime(1L));
+    }
 
+    @Test(expected = TimeNaoEncontradoException.class)
+    public void buscarMelhorJogadorDoTimeQueNaoExisteTime(){
+        desafio.buscarMelhorJogadorDoTime(7L);
+    }
 }
