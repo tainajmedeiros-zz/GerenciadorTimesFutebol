@@ -109,4 +109,17 @@ public class DesafioMeuTimeApplicationTest {
     public void buscarNomeTimeQueNaoExiste(){
         desafio.buscarNomeTime(10L);
     }
+
+    @Test
+    public void buscarJogadorComMaiorSalarioComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(2L,1L,"Hand",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        assertEquals(Long.valueOf(2L),desafio.buscarJogadorMaiorSalario(1L));
+    }
+
+    @Test(expected = TimeNaoEncontradoException.class)
+    public void buscarJogadorComMaiorSalarioSemTime(){
+        desafio.buscarJogadorMaiorSalario(1L);
+    }
 }
