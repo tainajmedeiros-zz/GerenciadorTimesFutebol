@@ -109,7 +109,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
     }
 
     @Override
-    public BigDecimal buscarSalarioDoJogaodor(Long idJogador) {
+    public BigDecimal buscarSalarioDoJogador(Long idJogador) {
+        if(!verificarExistenciaJogador(idJogador)) throw new br.com.gerenciador.exceptions.JogadorNaoEncontradoException();
+
+        for (Jogador j : jogadores) {
+            if (j.getId() == idJogador) {
+                return j.getSalario();
+            }
+        }
         return null;
     }
 
