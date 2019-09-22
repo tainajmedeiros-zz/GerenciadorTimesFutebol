@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -135,5 +136,23 @@ public class DesafioMeuTimeApplicationTest {
     public void buscarSalarioDoJogadorQueNaoExiste(){
         desafio.buscarSalarioDoJogador(56L);
     }
+
+    @Test
+    public void buscarJogadoresDoTimeComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(2L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(3L,1L,"Hand",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        desafio.incluirJogador(1L,1L,"Stella",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
+        List<Long> lista = desafio.buscarJogadoresDoTime(1L);
+        assertEquals(lista.get(0), Long.valueOf(1L));
+        assertEquals(lista.get(1), Long.valueOf(2L));
+        assertEquals(lista.get(2), Long.valueOf(3L));
+    }
+
+    @Test(expected = TimeNaoEncontradoException.class)
+    public void buscarJogadoresDoTimeQueNaoExisteTime(){
+        desafio.buscarJogadoresDoTime(8L);
+    }
+
 
 }
