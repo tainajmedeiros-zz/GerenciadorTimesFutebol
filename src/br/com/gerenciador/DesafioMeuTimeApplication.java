@@ -50,7 +50,21 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public Long buscarCapitaoDoTime(Long idTime) {
-        return null;
+        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
+
+        Long idCapitao = null;
+
+        for (Time t : times) {
+            if (t.getId() == idTime) {
+                idCapitao = t.getCapitao();
+                if (idCapitao != null) {
+                    return idCapitao;
+                }
+                break;
+            }
+        }
+
+        throw new br.com.gerenciador.exceptions.CapitaoNaoInformadoException();
     }
 
     @Override
