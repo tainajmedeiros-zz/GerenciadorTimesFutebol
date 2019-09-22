@@ -98,4 +98,15 @@ public class DesafioMeuTimeApplicationTest {
     public void buscarNomeJogadorQueNaoExiste(){
         desafio.buscarNomeJogador(5L);
     }
+
+    @Test
+    public void buscarNomeTimeComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        assertEquals("vasco", desafio.buscarNomeTime(1L));
+    }
+
+    @Test(expected = TimeNaoEncontradoException.class)
+    public void buscarNomeTimeQueNaoExiste(){
+        desafio.buscarNomeTime(10L);
+    }
 }
