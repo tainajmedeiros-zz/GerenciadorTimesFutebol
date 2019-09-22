@@ -105,4 +105,18 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
         }
         if(existeId) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
     }
+
+    public void verificarExistenciaIdJogador(Long id) {
+        boolean existeId = false;
+
+        for (Jogador j : jogadores) {
+            if (j.getId() == id) {
+                existeId = true;
+                break;
+            }
+        }
+        if(existeId) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
+    }
+
+
 }
