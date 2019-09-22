@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface{
@@ -191,7 +192,17 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public List<Long> buscarTopJogadores(Integer top) {
-        return null;
+        List<Jogador> listaAuxiliar = new ArrayList<>();
+        List<Long> topJogadores = new ArrayList<>();
+
+        listaAuxiliar.addAll(jogadores);
+        listaAuxiliar.sort(Comparator.comparing(Jogador::getNivelHabilidade, Comparator.reverseOrder()));
+
+        for (int i = 0; i < top; i++) {
+            topJogadores.add(listaAuxiliar.get(i).getId());
+        }
+
+        return topJogadores;
     }
 
 
