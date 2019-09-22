@@ -10,7 +10,7 @@ public interface MeuTimeInterface {
 
     public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal, String corUniformeSecundario);
 
-    public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario) throws TimeNaoEncontradoException;
+    public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario);
 
     public void definirCapitao(Long idJogador);
 
@@ -33,5 +33,7 @@ public interface MeuTimeInterface {
     public List<Long> buscarTimes();
 
     public List<Long> buscarTopJogadores(Integer top);
+
+    public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora);
 }
 
