@@ -1,7 +1,9 @@
 package test.br.com.gerenciador;
 
 import br.com.gerenciador.DesafioMeuTimeApplication;
+import br.com.gerenciador.exceptions.CapitaoNaoInformadoException;
 import br.com.gerenciador.exceptions.IdentificadorUtilizadoException;
+import br.com.gerenciador.exceptions.JogadorNaoEncontradoException;
 import br.com.gerenciador.exceptions.TimeNaoEncontradoException;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,5 +55,35 @@ public class DesafioMeuTimeApplicationTest {
         desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
         desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
         desafio.definirCapitao(1L);
+    }
+
+    @Test(expected = JogadorNaoEncontradoException.class)
+    public void definirCapitaoSemJogadorExistir(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.definirCapitao(2L);
+    }
+
+    @Test
+    public void buscarCapitaoComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.definirCapitao(1L);
+        assertEquals(Long.valueOf(1L), desafio.buscarCapitaoDoTime(1L));
+
+    }
+
+    @Test(expected = TimeNaoEncontradoException.class)
+    public void buscarCapitaoDeTimeQueNaoExiste(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.buscarCapitaoDoTime(2L);
+    }
+
+    @Test(expected = CapitaoNaoInformadoException.class)
+    public void buscarCapitaoDeTimeQueNaoExisteCapitao(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.buscarCapitaoDoTime(1L);
     }
 }
