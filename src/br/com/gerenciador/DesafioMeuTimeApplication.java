@@ -81,8 +81,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public String buscarNomeTime(Long idTime) {
-        return null;
-    }
+        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
+
+        for (Time t : times) {
+            if (t.getId() == idTime) {
+                return t.getNome();
+            }
+        }
+        return null;    }
 
     @Override
     public Long buscarJogadorMaiorSalario(Long idTime) {
