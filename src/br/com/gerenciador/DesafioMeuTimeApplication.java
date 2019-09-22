@@ -160,7 +160,20 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public Long buscarJogadorMaisVelho(Long idTime) {
-        return null;
+        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
+
+        Integer maoirIdade = 0;
+        Long idJogadorMaisVelho = null;
+
+        for (Jogador j : jogadores) {
+            if (j.getIdTime() == idTime && j.calcularIdade() >= maoirIdade) {
+                maoirIdade = j.calcularIdade();
+                if (idJogadorMaisVelho == null || j.getId() < idJogadorMaisVelho) {
+                        idJogadorMaisVelho = j.getId();
+                }
+            }
+        }
+        return idJogadorMaisVelho;
     }
 
     @Override
