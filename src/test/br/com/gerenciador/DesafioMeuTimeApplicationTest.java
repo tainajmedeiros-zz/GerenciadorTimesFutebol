@@ -213,4 +213,19 @@ public class DesafioMeuTimeApplicationTest {
         assertEquals(lista.get(3), Long.valueOf(4L));
     }
 
+    @Test
+    public void buscarTopJogadoresComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirTime(2L,"flamengo", LocalDate.of(1988,06,18),"vermelho", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        desafio.incluirJogador(3L,1L,"Hand",LocalDate.of(1999,04,18),9, BigDecimal.valueOf(30));
+        desafio.incluirJogador(2L,1L,"Stella",LocalDate.of(1998,06,18),4, BigDecimal.valueOf(30));
+        desafio.incluirJogador(5L,2L,"Taina",LocalDate.of(1998,06,18),2, BigDecimal.valueOf(10));
+        desafio.incluirJogador(4L,2L,"Hand",LocalDate.of(1999,04,18),7, BigDecimal.valueOf(30));
+        desafio.incluirJogador(6L,2L,"Stella",LocalDate.of(1998,06,18),3, BigDecimal.valueOf(30));
+        List<Long> lista = desafio.buscarTopJogadores(3);
+        assertEquals(lista.get(0), Long.valueOf(1L));
+        assertEquals(lista.get(1), Long.valueOf(3L));
+        assertEquals(lista.get(2), Long.valueOf(4L));
+    }
 }
