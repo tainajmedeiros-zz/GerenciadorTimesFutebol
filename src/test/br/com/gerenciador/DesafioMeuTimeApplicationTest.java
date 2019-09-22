@@ -228,4 +228,18 @@ public class DesafioMeuTimeApplicationTest {
         assertEquals(lista.get(1), Long.valueOf(3L));
         assertEquals(lista.get(2), Long.valueOf(4L));
     }
+
+    @Test
+    public void buscarCorCamisaTimeDeForaComCoresPrimariasDiferentes(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirTime(2L,"flamengo", LocalDate.of(1988,06,18),"vermelho", "preto");
+        assertEquals("vermelho", desafio.buscarCorCamisaTimeDeFora(1L,2L));
+    }
+
+    @Test
+    public void buscarCorCamisaTimeDeForaComCoresPrimariasIguais(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirTime(2L,"flamengo", LocalDate.of(1988,06,18),"branco", "preto");
+        assertEquals("preto", desafio.buscarCorCamisaTimeDeFora(1L,2L));
+    }
 }
