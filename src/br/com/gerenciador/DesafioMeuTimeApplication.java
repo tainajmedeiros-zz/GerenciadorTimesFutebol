@@ -29,7 +29,23 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public void definirCapitao(Long idJogador) {
+        if(!verificarExistenciaJogador(idJogador)) throw new br.com.gerenciador.exceptions.JogadorNaoEncontradoException();
 
+        Long timeJogador = null;
+
+        for (Jogador j : jogadores) {
+            if (j.getId() == idJogador) {
+                timeJogador = j.getIdTime();
+                break;
+            }
+        }
+
+        for (Time t : times) {
+            if (t.getId() == timeJogador) {
+                t.definirCapitao(idJogador);
+                break;
+            }
+        }
     }
 
     @Override
