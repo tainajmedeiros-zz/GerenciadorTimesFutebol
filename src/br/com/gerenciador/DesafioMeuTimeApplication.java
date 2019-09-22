@@ -7,6 +7,7 @@ import br.com.gerenciador.exceptions.TimeNaoEncontradoException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface{
@@ -122,7 +123,20 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public List<Long> buscarJogadoresDoTime(Long idTime) {
-        return null;
+
+        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
+
+        List<Long> jogadoresTime = new ArrayList<>();
+
+        for (Jogador j : jogadores) {
+            if (j.getIdTime() == idTime) {
+                jogadoresTime.add(j.getId());
+            }
+        }
+
+        Collections.sort(jogadoresTime);
+
+        return jogadoresTime;
     }
 
     @Override
