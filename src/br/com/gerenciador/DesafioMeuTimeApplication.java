@@ -141,7 +141,21 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public Long buscarMelhorJogadorDoTime(Long idTime) {
-        return null;
+
+        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
+
+        Integer nivelMaiorHabilidade = 0;
+        Long idMelhorJogador = null;
+
+        for (Jogador j : jogadores) {
+            if (j.getIdTime() == idTime) {
+                if (j.getNivelHabilidade() > nivelMaiorHabilidade) {
+                    nivelMaiorHabilidade = j.getNivelHabilidade();
+                    idMelhorJogador = j.getId();
+                }
+            }
+        }
+        return idMelhorJogador;
     }
 
     @Override
