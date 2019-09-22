@@ -52,6 +52,19 @@ public class DesafioMeuTimeApplicationTest {
     }
 
     @Test
+    public void incluirJogadorComNivelDeHabilidadeMenorZero(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),-10, BigDecimal.valueOf(10));
+        assertEquals(0, desafio.jogadores.get(0).getNivelHabilidade());
+    }
+
+    @Test
+    public void incluirJogadorComNivelDeHabilidadeMaiorCem(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),150, BigDecimal.valueOf(10));
+        assertEquals(100, desafio.jogadores.get(0).getNivelHabilidade());
+    }
+    @Test
     public void definirCapitaoComSucesso(){
         desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
         desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
@@ -97,6 +110,8 @@ public class DesafioMeuTimeApplicationTest {
 
     @Test(expected = JogadorNaoEncontradoException.class)
     public void buscarNomeJogadorQueNaoExiste(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
         desafio.buscarNomeJogador(5L);
     }
 
