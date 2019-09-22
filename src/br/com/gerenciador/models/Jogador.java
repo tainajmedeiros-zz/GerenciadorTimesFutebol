@@ -18,7 +18,7 @@ public class Jogador implements Comparable<Jogador> {
         this.idTime = idTime;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
-        this.nivelHabilidade = nivelHabilidade;
+        setNivelHabilidade(nivelHabilidade);
         this.salario = salario;
     }
 
@@ -34,6 +34,14 @@ public class Jogador implements Comparable<Jogador> {
         }
     }
 
+    public void setNivelHabilidade(Integer nivelHabilidade) {
+        if(nivelHabilidade < 0){
+            this.nivelHabilidade = 0;
+        }else if(nivelHabilidade > 100){
+            this.nivelHabilidade = 100;
+        }else
+            this.nivelHabilidade = nivelHabilidade;
+    }
     public Long getId() {
         return id;
     }
@@ -50,7 +58,7 @@ public class Jogador implements Comparable<Jogador> {
         return dataNascimento;
     }
 
-    public Integer getNivelHabilidade() {
+    public int getNivelHabilidade() {
         return nivelHabilidade;
     }
 
