@@ -86,4 +86,16 @@ public class DesafioMeuTimeApplicationTest {
         desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
         desafio.buscarCapitaoDoTime(1L);
     }
+
+    @Test
+    public void buscarNomeJogadorComSucesso(){
+        desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
+        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
+        assertEquals("Taina", desafio.buscarNomeJogador(1L));
+    }
+
+    @Test(expected = JogadorNaoEncontradoException.class)
+    public void buscarNomeJogadorQueNaoExiste(){
+        desafio.buscarNomeJogador(5L);
+    }
 }
