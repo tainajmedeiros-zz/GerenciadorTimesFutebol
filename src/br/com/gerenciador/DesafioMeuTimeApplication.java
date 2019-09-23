@@ -3,6 +3,8 @@ import br.com.gerenciador.exceptions.JogadorNaoEncontradoException;
 import br.com.gerenciador.models.Jogador;
 import br.com.gerenciador.models.Time;
 import br.com.gerenciador.exceptions.TimeNaoEncontradoException;
+import br.com.gerenciador.exceptions.IdentificadorUtilizadoException;
+import br.com.gerenciador.exceptions.CapitaoNaoInformadoException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,6 +13,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static br.com.gerenciador.Examinador.acharJogador;
+import static br.com.gerenciador.Examinador.acharTime;
+import static br.com.gerenciador.Verificador.existeJogador;
+import static br.com.gerenciador.Verificador.existeTime;
+
 public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     public List<Jogador> jogadores = new ArrayList<>();
@@ -18,182 +25,103 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal, String corUniformeSecundario) {
-        if(verificarExistenciaTime(id)) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException() ;
+        if(acharTime(id,this.times) == null) throw new IdentificadorUtilizadoException();
         times.add(new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario));
     }
 
     @Override
     public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario)  {
-        if(verificarExistenciaJogador(id)) throw new br.com.gerenciador.exceptions.IdentificadorUtilizadoException();
-        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
-        jogadores.add(new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario));
+        if(acharJogador(id, this.jogadores) == null) throw new IdentificadorUtilizadoException();
+        Time t = acharTime(idTime, times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        Jogador jogador = new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
+        jogadores.add(jogador);
+        t.adicionarJogador(jogador);
     }
 
     @Override
     public void definirCapitao(Long idJogador) {
-        if(!verificarExistenciaJogador(idJogador)) throw new br.com.gerenciador.exceptions.JogadorNaoEncontradoException();
-
-        Long timeJogador = null;
-
-        for (Jogador j : jogadores) {
-            if (j.getId() == idJogador) {
-                timeJogador = j.getIdTime();
-                break;
-            }
-        }
-
-        for (Time t : times) {
-            if (t.getId() == timeJogador) {
-                t.definirCapitao(idJogador);
-                break;
-            }
-        }
+        Jogador j = acharJogador(idJogador, jogadores);
+        if (j == null) throw new JogadorNaoEncontradoException();
+        Time t = acharTime(j.getIdTime(), times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        t.definirCapitao(j); //verificar lista de jogadores na classe time
     }
 
     @Override
     public Long buscarCapitaoDoTime(Long idTime) {
-        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
-
-        Long idCapitao = null;
-
-        for (Time t : times) {
-            if (t.getId() == idTime) {
-                idCapitao = t.getCapitao();
-                if (idCapitao != null) {
-                    return idCapitao;
-                }
-                break;
-            }
-        }
-
-        throw new br.com.gerenciador.exceptions.CapitaoNaoInformadoException();
+        Time t = acharTime(idTime, times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        if(t.getCapitao() == null) throw new CapitaoNaoInformadoException();
+        return t.getCapitao().getId();
     }
 
     @Override
     public String buscarNomeJogador(Long idJogador) {
-        if(!verificarExistenciaJogador(idJogador)) throw new br.com.gerenciador.exceptions.JogadorNaoEncontradoException();
-
-        for (Jogador j : jogadores) {
-            if (j.getId() == idJogador) {
-                return j.getNome();
-            }
-        }
-        return null;
+        Jogador j = acharJogador(idJogador, jogadores);
+        if(j == null) throw new JogadorNaoEncontradoException();
+        return j.getNome();
     }
 
     @Override
     public String buscarNomeTime(Long idTime) {
-        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
-
-        for (Time t : times) {
-            if (t.getId() == idTime) {
-                return t.getNome();
-            }
-        }
-        return null;    }
+        Time t = acharTime(idTime, times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        return t.getNome();
+    }
 
     @Override
     public Long buscarJogadorMaiorSalario(Long idTime) {
-        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
-
-        BigDecimal maoirSalario = new BigDecimal(0);
-        Long idJogadorMaiorSalario = null;
-
-        for (Jogador j : jogadores) {
-            if (j.getIdTime() == idTime) {
-                if (j.getSalario().doubleValue() > maoirSalario.doubleValue()) {
-                    idJogadorMaiorSalario = j.getId();
-                }
-            }
-        }
-
-        return idJogadorMaiorSalario;
+        Time t = acharTime(idTime, times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        return t.jogadorMaiorSalario();
     }
 
     @Override
     public BigDecimal buscarSalarioDoJogador(Long idJogador) {
-        if(!verificarExistenciaJogador(idJogador)) throw new br.com.gerenciador.exceptions.JogadorNaoEncontradoException();
-
-        for (Jogador j : jogadores) {
-            if (j.getId() == idJogador) {
-                return j.getSalario();
-            }
-        }
-        return null;
+        Jogador j = acharJogador(idJogador, jogadores);
+        if(j == null) throw new JogadorNaoEncontradoException();
+        return j.getSalario();
     }
 
     @Override
     public List<Long> buscarJogadoresDoTime(Long idTime) {
-
-        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
-
-        List<Long> jogadoresTime = new ArrayList<>();
-
-        for (Jogador j : jogadores) {
-            if (j.getIdTime() == idTime) {
-                jogadoresTime.add(j.getId());
-            }
-        }
-
+        Time t = acharTime(idTime, times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        List<Long> jogadoresTime;
+        jogadoresTime = t.listarJogadores();
         Collections.sort(jogadoresTime);
-
         return jogadoresTime;
     }
 
     @Override
     public Long buscarMelhorJogadorDoTime(Long idTime) {
-
-        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
-
-        Integer nivelMaiorHabilidade = 0;
-        Long idMelhorJogador = null;
-
-        for (Jogador j : jogadores) {
-            if (j.getIdTime() == idTime) {
-                if (j.getNivelHabilidade() > nivelMaiorHabilidade) {
-                    nivelMaiorHabilidade = j.getNivelHabilidade();
-                    idMelhorJogador = j.getId();
-                }
-            }
-        }
-        return idMelhorJogador;
+        Time t = acharTime(idTime, times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        return t.melhorJogadorDoTime();
     }
 
     @Override
     public Long buscarJogadorMaisVelho(Long idTime) {
-        if(!verificarExistenciaTime(idTime)) throw new br.com.gerenciador.exceptions.TimeNaoEncontradoException();
-
-        Integer maoirIdade = 0;
-        Long idJogadorMaisVelho = null;
-
-        for (Jogador j : jogadores) {
-            if (j.getIdTime() == idTime && j.calcularIdade() >= maoirIdade) {
-                maoirIdade = j.calcularIdade();
-                if (idJogadorMaisVelho == null || j.getId() < idJogadorMaisVelho) {
-                        idJogadorMaisVelho = j.getId();
-                }
-            }
-        }
-        return idJogadorMaisVelho;
+        Time t = acharTime(idTime, times);
+        if(t == null) throw new TimeNaoEncontradoException();
+        return t.jogadorMaisVelho();
     }
 
     @Override
     public List<Long> buscarTimes() {
-        List<Long> listaTimes = new ArrayList<>();
-
+        List<Long> listaTimes = null;
         for (Time t : times) {
             listaTimes.add(t.getId());
         }
-
         Collections.sort(listaTimes);
-
         return listaTimes;
     }
 
     @Override
     public List<Long> buscarTopJogadores(Integer top) {
         List<Jogador> listaAuxiliar = new ArrayList<>();
-        List<Long> topJogadores = new ArrayList<>();
+        List<Long> topJogadores = null;
 
         listaAuxiliar.addAll(jogadores);
         listaAuxiliar.sort(Comparator.comparing(Jogador::getNivelHabilidade, Comparator.reverseOrder()));
@@ -201,53 +129,19 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
         for (int i = 0; i < top; i++) {
             topJogadores.add(listaAuxiliar.get(i).getId());
         }
-
         return topJogadores;
     }
 
     @Override
     public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
-
-        String corTimeCasa = "";
-        String corTimeFora = "";
-
-        for(Time t: times){
-            if(t.getId() == timeDaCasa){
-                corTimeCasa = t.getCorUniformePrincipal();
-            }else if(t.getId() == timeDeFora && !t.getCorUniformePrincipal().equals(corTimeCasa)){
-                corTimeFora = t.getCorUniformePrincipal();
-            }else
-                corTimeFora = t.getCorUniformeSecundario();
-        }
-
-        return corTimeFora;
+        Time tCasa = acharTime(timeDaCasa, times);
+        Time tFora = acharTime(timeDeFora, times);
+        if(tCasa == null || tFora == null) throw new TimeNaoEncontradoException();
+        return tFora.definirCamisaPartida(tCasa.getCorUniformePrincipal());
     }
 
 
-    public boolean verificarExistenciaTime(Long idTime) throws TimeNaoEncontradoException {
-        boolean existeTime = false;
 
-        for (Time t : times) {
-            if (t.getId() == idTime) {
-                existeTime = true;
-                break;
-            }
-        }
-         return existeTime;
-    }
-
-    public boolean verificarExistenciaJogador(Long id) {
-        boolean existeId = false;
-
-        for (Jogador j : jogadores) {
-            if (j.getId() == id) {
-                existeId = true;
-                break;
-            }
-        }
-        return existeId;
-
-    }
 
 
 }
