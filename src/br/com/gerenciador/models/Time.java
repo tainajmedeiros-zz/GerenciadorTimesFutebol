@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class Time {
 
     private Long id;
@@ -61,7 +62,8 @@ public class Time {
             jogadoresTime.add(j.getId());
         }
 
-        Collections.sort(jogadoresTime);
+        jogadoresTime.sort(Long::compareTo);
+        //Collections.sort(jogadoresTime);
         return jogadoresTime;
     }
 
