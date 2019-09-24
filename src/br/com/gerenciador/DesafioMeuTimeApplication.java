@@ -9,14 +9,12 @@ import br.com.gerenciador.exceptions.CapitaoNaoInformadoException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import static br.com.gerenciador.Examinador.acharJogador;
 import static br.com.gerenciador.Examinador.acharTime;
-import static br.com.gerenciador.Verificador.existeJogador;
-import static br.com.gerenciador.Verificador.existeTime;
+
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
@@ -90,7 +88,6 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
         if(t == null) throw new TimeNaoEncontradoException();
         List<Long> jogadoresTime;
         jogadoresTime = t.listarJogadores();
-        Collections.sort(jogadoresTime);
         return jogadoresTime;
     }
 
@@ -114,7 +111,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
         for (Time t : times) {
             listaTimes.add(t.getId());
         }
-        Collections.sort(listaTimes);
+        listaTimes.sort(Long::compareTo);
         return listaTimes;
     }
 
