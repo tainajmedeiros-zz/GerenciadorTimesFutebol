@@ -25,13 +25,13 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal, String corUniformeSecundario) {
-        if(acharTime(id,this.times) == null) throw new IdentificadorUtilizadoException();
+        if(acharTime(id,this.times) != null) throw new IdentificadorUtilizadoException();
         times.add(new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario));
     }
 
     @Override
     public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario)  {
-        if(acharJogador(id, this.jogadores) == null) throw new IdentificadorUtilizadoException();
+        if(acharJogador(id, this.jogadores) != null) throw new IdentificadorUtilizadoException();
         Time t = acharTime(idTime, times);
         if(t == null) throw new TimeNaoEncontradoException();
         Jogador jogador = new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
@@ -110,7 +110,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
 
     @Override
     public List<Long> buscarTimes() {
-        List<Long> listaTimes = null;
+        List<Long> listaTimes = new ArrayList<Long>();
         for (Time t : times) {
             listaTimes.add(t.getId());
         }
@@ -121,7 +121,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
     @Override
     public List<Long> buscarTopJogadores(Integer top) {
         List<Jogador> listaAuxiliar = new ArrayList<>();
-        List<Long> topJogadores = null;
+        List<Long> topJogadores = new ArrayList<Long>();
 
         listaAuxiliar.addAll(jogadores);
         listaAuxiliar.sort(Comparator.comparing(Jogador::getNivelHabilidade, Comparator.reverseOrder()));
