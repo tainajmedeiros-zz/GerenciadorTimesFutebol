@@ -97,7 +97,6 @@ public class DesafioMeuTimeApplicationTest {
     @Test(expected = CapitaoNaoInformadoException.class)
     public void buscarCapitaoDeTimeQueNaoExisteCapitao(){
         desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
-        desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
         desafio.buscarCapitaoDoTime(1L);
     }
 
@@ -131,7 +130,7 @@ public class DesafioMeuTimeApplicationTest {
         desafio.incluirTime(1L,"vasco", LocalDate.of(1988,06,18),"branco", "preto");
         desafio.incluirJogador(1L,1L,"Taina",LocalDate.of(1998,06,18),10, BigDecimal.valueOf(10));
         desafio.incluirJogador(2L,1L,"Hand",LocalDate.of(1998,06,18),9, BigDecimal.valueOf(30));
-        assertEquals(Long.valueOf(2L),desafio.buscarJogadorMaiorSalario(1L));
+        assertEquals(Long.valueOf(1L),desafio.buscarJogadorMaiorSalario(1L));
     }
 
     @Test(expected = TimeNaoEncontradoException.class)
