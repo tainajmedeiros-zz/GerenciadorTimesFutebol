@@ -55,7 +55,7 @@ public class Time {
 
     public List<Long> listarJogadores(){
 
-        List<Long> jogadoresTime = null;
+        List<Long> jogadoresTime = new ArrayList<Long>();
 
         for (Jogador j : jogadores) {
             jogadoresTime.add(j.getId());
@@ -71,7 +71,7 @@ public class Time {
 
         for (Jogador j : jogadores) {
             if (j.getNivelHabilidade() >= nivelMaiorHabilidade) {
-                if(j.getId() == null || j.getId() < idMelhorJogador)
+                if(idMelhorJogador == null || j.getId() < idMelhorJogador)
                     nivelMaiorHabilidade = j.getNivelHabilidade();
                 idMelhorJogador = j.getId();
             }
