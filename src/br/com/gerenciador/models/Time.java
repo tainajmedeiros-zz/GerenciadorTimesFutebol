@@ -63,7 +63,6 @@ public class Time {
         }
 
         jogadoresTime.sort(Long::compareTo);
-        //Collections.sort(jogadoresTime);
         return jogadoresTime;
     }
 
