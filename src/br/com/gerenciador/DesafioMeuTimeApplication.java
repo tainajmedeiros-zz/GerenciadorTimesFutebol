@@ -123,9 +123,12 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface{
         listaAuxiliar.addAll(jogadores);
         listaAuxiliar.sort(Comparator.comparing(Jogador::getNivelHabilidade, Comparator.reverseOrder()));
 
-        for (int i = 0; i < top; i++) {
-            topJogadores.add(listaAuxiliar.get(i).getId());
+        if(listaAuxiliar.size() >0){
+            for (int i = 0; i < top; i++) {
+                topJogadores.add(listaAuxiliar.get(i).getId());
+            }
         }
+
         return topJogadores;
     }
 
