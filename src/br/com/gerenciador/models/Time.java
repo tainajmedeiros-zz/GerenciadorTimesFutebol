@@ -68,47 +68,61 @@ public class Time {
 
     public Long melhorJogadorDoTime(){
         Integer nivelMaiorHabilidade = 0;
-        Long idMelhorJogador = null;
+        Jogador melhorJogador = null;
 
         for (Jogador j : jogadores) {
-            if (j.getNivelHabilidade() >= nivelMaiorHabilidade) {
-                if(idMelhorJogador == null || j.getId() < idMelhorJogador)
-                    nivelMaiorHabilidade = j.getNivelHabilidade();
-                idMelhorJogador = j.getId();
+            if (j.getNivelHabilidade() > nivelMaiorHabilidade) {
+                nivelMaiorHabilidade = j.getNivelHabilidade();
+                melhorJogador = j;
+            }
+            else if(nivelMaiorHabilidade == j.getNivelHabilidade()){
+                if(j.getId() < melhorJogador.getId()){
+                    melhorJogador = j;
+                }
             }
         }
-        return idMelhorJogador;
+
+        return melhorJogador.getId();
     }
 
     public Long jogadorMaisVelho(){
         Integer maoirIdade = 0;
-        Long idJogadorMaisVelho = null;
+        Jogador jogadorMaisVelho = null;
         Integer idade;
 
         for (Jogador j : jogadores) {
             idade = j.calcularIdade();
-            if (idade >= maoirIdade) {
-                if (idJogadorMaisVelho == null || j.getId() < idJogadorMaisVelho) {
-                    maoirIdade = idade;
-                    idJogadorMaisVelho = j.getId();
+            if (idade > maoirIdade) {
+                maoirIdade = idade;
+                jogadorMaisVelho = j;
+            }
+            else if(idade == maoirIdade){
+                if(j.getId() < jogadorMaisVelho.getId()){
+                    jogadorMaisVelho = j;
                 }
             }
         }
-        return idJogadorMaisVelho;
+        return jogadorMaisVelho.getId();
     }
 
     public Long jogadorMaiorSalario(){
 
         BigDecimal maoirSalario = new BigDecimal(0);
-        Long idJogadorMaiorSalario = null;
+        Jogador jogadorMaiorSalario = null;
 
         for (Jogador j : jogadores) {
-            if (j.getSalario().doubleValue() > maoirSalario.doubleValue()) {
-                if(idJogadorMaiorSalario == null || j.getId() < idJogadorMaiorSalario)
-                    idJogadorMaiorSalario = j.getId();
+            if(j.getSalario().doubleValue() > maoirSalario.doubleValue()){
+                jogadorMaiorSalario = j;
+                maoirSalario = j.getSalario();
+            }
+            else if(j.getSalario().doubleValue() == maoirSalario.doubleValue()){
+                if(j.getId() < jogadorMaiorSalario.getId()){
+                    jogadorMaiorSalario = j;
+
+                }
             }
         }
-        return idJogadorMaiorSalario;
+        return jogadorMaiorSalario.getId();
     }
 
     public String definirCamisaPartida(String corTimeCasa){
@@ -117,4 +131,5 @@ public class Time {
         return corUniformePrincipal;
 
     }
+
 }
